@@ -1,7 +1,7 @@
 # LanguageCompare
 Comparison of language APIs
-- [Dynamic Array](##Dynamic-Array)
-- [Hash Table](##Hash-Table)
+- [Dynamic Array](#dynamic-array)
+- [Hash Table](#hash-table)
 
 ## Dynamic Array
 <details>
