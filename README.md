@@ -228,13 +228,14 @@ There are two container in STL that can be used as list:
 1. forward_list (singly linked list, no size count)
 2. list (doublely linked list, has size count)
 
+Although forward_list is simpler and less overhead, it is rather inconvenient to use. Instead, we'll use list.
 #### Init
 ```
-#include <forward_list>
-1. forward_list<T> list;
-2. forward_list<T> list(size);
-2. forward_list<T> list(size, item); 
-3. forward_list<T> list({a,b,c});
+#include <list>
+1. list<T> list;
+2. list<T> list(size);
+2. list<T> list(size, item); 
+3. list<T> list({a,b,c});
 ```
 #### Iterate
 ```
@@ -280,13 +281,13 @@ return null;
 list.push_front(item); //if use list, there's symetric push_back()
 
 // 2. copy
-it = list.insert_after(list.before_begin(), item); // the before_begin() iterator is NOT available in list, return iterator points to the inserted item
+it = list.insert(list.begin(), item); // this means insert BEFORE the original item. return iterator points to the inserted item
 
 // 3. item is constructed in place and added to front
-list.emplace_front(Args for item constructor);
+list.emplace_front(Args for item constructor); //if use list, there's symetric emplace_back()
 
 // 4. item is constructed in place and added to front
-it = list.emplace_after(list.before_begin(), Args for item constructor);
+it = list.emplace(list.begin(), Args for item constructor);
 ```
 #### Insert at Index i  (O(i))
 ```
@@ -295,8 +296,8 @@ idx = -1;
 it = list.begin();
 while(it!=list.end()){
     ++idx;
-    if(idx == i-1){
-        it = list.insert_after(list.before_begin(), item); //use emplace_after if can
+    if(idx == i){
+        it = list.insert(it, item); //use emplace if can
         break;
     }
     ++it; //note you cannot use it=it+1 cos + is not defined for list iterator 
@@ -314,8 +315,8 @@ idx = -1;
 it = list.begin();
 while(it!=list.end()){
     ++idx;
-    if(idx == i-1){
-        list.erase_after(it);
+    if(idx == i){
+        list.erase(it);
         break;
     }
     ++it; //note you cannot use it=it+1 cos + is not defined for list iterator 
@@ -406,8 +407,8 @@ dq.clear()
 #### Init
 ```
 #include <unordered_map>
-1. unordered_map< pair< T1,T2 > > hash;
-2. unordered_map< pair< T1,T2 > > hash({ {key1,val1},{key2,val2},{key3,val3} });
+1. unordered_map<T1,T2> hash;
+2. unordered_map<T1,T2> hash({ {key1,val1},{key2,val2},{key3,val3} });
 ```
 #### Search item
 ```
@@ -714,6 +715,124 @@ if len(dq)>0:
 #### Delete All
 ```
 dq.clear()
+```
+
+</details>
+
+## Priority Queue
+<details>
+<summary>C++</summary>
+
+In C++ priority_queue is a container adaptor which uses default underlying container vector. But the underlying container can also be deque. Therefore, vector, deque can all be used as priority_queue directly, and additionally provide more functions. Do note that vector is continuous in memory so the reallocation will take time if it grows in size. While deque is not continuous so does not suffer this problem. However, if you want to restrict the datastructure behaviour to only priority_queue operations, then you should just use priority_queue.
+
+#### Init
+```
+#include <queue>
+//1. max heap
+priority_queue<pair<int,T> >pq;
+
+//2. min heap
+priority_queue<pair<int,T>, vector<pair<int,T> >, greater<pair<int, T> > >pq;
+
+//3. custom comparator
+auto customCompare = [](const T& a, const T& b){
+    return (compare a, b return bool);
+};
+priority_queue<T, vector<T>, decltype( customCompare )> pq(customCompare);
+```
+#### Peek
+```
+if (!pq.empty()){ //important, error if top from empty
+    return pq.top();
+} 
+```
+#### Push
+```
+//1. copy
+pq.push(item);
+
+//2. item is constructed in place and added to priority queue
+pq.emplace(Args of item constructor); //for pair, its just two objects
+```
+#### Pop
+```
+if(!pq.empty()){ //important, error if pop from empty
+    item = pq.top(); //copy if you need
+    pq.pop(); //item destructor called
+}
+```
+#### Update Priority
+C++ priority does not straight forward support priority update. There are a few ways to work around:
+1. make_heap on the underlying vector container when there is an update.
+2. Push updated (priority, value) pair into the queue without trying to find and delete the old one. Take note of the value's latest priority in some other data structure. When poping from priority queue, check if the priority is latest, if not, keep popping. Accept the fact that there will be outdated data in the priority queue. 
+3. Someone suggest use set, which has logN access, delete, update time. However, it does not support key-value pair.
+
+Personally, I'll pick 1st method.
+```
+//external data structure which we can access and modify later
+vector<pair<int,T> > external_vec; //first represents priority, you can also use a custom class instead of pair
+external_vec.emplace_back(1,item1);
+external_vec.emplace_back(3,item2);
+
+//custom comparator for priority queue
+auto customCompare = [](const pair<int,T>* a, const pair<int,T>* b){
+    return a->first < b->first; //a max heap
+};
+
+//construct priority queue using data pointer (you can use shared_ptr too)
+priority_queue<pair<int,T>*, vector<pair<int,T>* >, decltype( customCompare )> pq(customCompare);
+pq.push(&(external_vec[0]));
+pq.push(&(external_vec[1]));
+
+//when a priority update is made
+external_vec[0].first=5;
+
+//update the underlying vector of the priority queue, taking advantage of the fact that vector memory is continuous. This step is O(N) in worst case 
+make_heap(const_cast<pair<int,T>**>(&pq.top()), const_cast<pair<int,T>** >(&pq.top()) + pq.size(), customCompare);
+```
+#### Delete All
+```
+// there is no clear() function in priority_queue, same as stack/queue
+while(!pq.empty()){
+    pq.pop(); //item destructor called.
+}
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+
+
+#### Init
+```
+import heapq
+pq=[] //yes, nothing just a list will do
+```
+#### Peek
+```
+if len(pq)>0:
+    return pq[0] //python only support min heap, so pq[0] is mallest priority
+```
+#### Push
+```
+1. heapq.heappush(pq,[priority, item]) //note priority can be any comparable
+2. priority, item = heapq.heappushpop(pq, [priority, item]) //this will do a push followed by pop, more efficient
+```
+#### Pop
+```
+1. priority, item = heapq.heappop(pq)
+2. priority, item = heapq.heapreplace(pq, [priority, item]) //this will do a pop followed by push, more efficient
+```
+#### Update Priority
+```
+// you can directly update the list and heapify, but you must know that heapify will change the list ordering
+pq[0][0]=1
+heapq.heapify(pq)
+```
+#### Delete All
+```
+pq.clear()
 ```
 
 </details>
