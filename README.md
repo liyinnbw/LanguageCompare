@@ -1,11 +1,251 @@
 # LanguageCompare
 Comparison of language APIs
+- [String](#string)
 - [Continuous Memory Dynamic Array](#continuous-memory-dynamic-array)
 - [Linked List](#linked-list)
 - [Hash Table](#hash-table)
 - [Stack](#stack)
 - [Queue](#queue)
 - [Priority Queue](#priority-queue)
+
+## String
+<details>
+<summary>C++</summary>
+
+#### Init
+```
+#include <string> //for string
+
+// 1. single line
+string s = "hello world"
+
+// 2. multi line
+string s = "hello "
+           "world"; //same as s = "hello world"
+```
+
+#### String Builder
+```
+#include <iostream>
+ostringstream oss;
+oss<<"a"<<"b";
+string s=iss.str();
+```
+
+#### String Format
+```
+#include <iomanip>
+#include <bitset>
+
+float a = 10.546;
+cout<<a<<endl; //10.546
+cout<<std::setprecision(2)<<std::fixed;
+cout<<a<<endl; //10.55 (with good rounding)
+cout<<std::setprecision(6)<<std::defaultfloat; //reset to default
+
+cout<<std::setprecision(0)<<std::fixed;
+cout<<a<<endl; //11 (with good rounding)
+cout<<std::setprecision(6)<<std::defaultfloat; //reset to default
+
+cout<<std::setprecision(2)<<std::scientific;
+cout<<a<<endl; //1.05e+01
+cout<<std::setprecision(6)<<std::defaultfloat; //reset to default
+
+cout<<std::setw(12);
+cout<<a<<endl; //      10.546 (left pad to 12 chars)
+cout<<std::setw(0); //reset to default
+
+cout<<std::setw(12)<<std::setfill ('0');
+cout<<a<<endl; //00000010.546 (left pad to 12 chars with 0s)
+cout<<std::setw(0)<<std::setfill (' '); //reset to default
+
+cout<<std::setw(12)<<std::setfill ('0')<<std::left;
+cout<<a<<endl; //10.546000000 (right pad to 12 chars with 0s)
+cout<<std::setw(0)<<std::setfill (' ')<<std::right; //reset to default
+
+int b = 100;
+cout<<std::bitset<8*sizeof(b)>(b)<<endl; //00000000000000000000000001100100
+
+cout<<std::oct; //octal: base 8
+cout<<b<<endl; //144
+cout<<std::dec;
+
+cout<<std::hex; //hexal: base 16
+cout<<b<<endl; //64
+cout<<std::dec;
+```
+
+#### Substring
+```
+string subs = s.substr(startIdx, len);
+```
+
+#### Find Substring Index
+```
+size_t startIdx = s.find(substring);
+if (startIdx == string::npos){
+    //not found
+}
+```
+
+#### Replace Substring
+```
+// 1. replace known segment
+s.replace(startIdx, len, newstring); //replaced substring can be of different length than new string
+
+// 2. find and replace first occurrence
+size_t startIdx = s.find(substring);
+if (startIdx != string::npos){
+    s.replace(startIdx, substring.length(), newstring);
+}
+
+// 3. find and replace all occurrences
+size_t startIdx = 0;
+while ((startIdx = s.find(substring, startIdx)) != string::npos){
+    s.replace(startIdx, substring.length(), newstring);
+    startIdx += substring.length();
+}
+```
+
+#### Reverse String
+```
+std::reverse(s.begin(),s.end()); //inplace
+```
+
+#### Split String
+```
+size_t startIdx = 0;
+size_t endIdx = 0;
+vector<string> splitted;
+while ((endIdx = s.find(delimiter, startIdx)) != string::npos){
+    splitted.emplace_back(s.substr(startIdx, endIdx-startIdx));
+    startIdx = endIdx+delimiter.length();
+}
+splitted.emplace_back(s.substr(startIdx, endIdx-startIdx));
+```
+
+#### Trim
+```
+```
+
+#### Change Case
+```
+#include <algorithm>
+
+// 1. to upper
+transform(s.begin(), s.end(),s.begin(), ::toupper);
+
+// 2. to lower
+transform(s.begin(), s.end(),s.begin(), ::tolower);
+
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+    
+#### Init
+```
+// 1. single line
+s = 'hello world'
+
+// 2. multi line
+s = 'hello \
+world' //same as s = "hello world"
+
+// 3. multi line with line break
+s = """hello
+world""" // this will insert line break between "hello" and "world"
+```
+
+#### String Builder
+```
+// 1. array join
+arr = []
+arr.append('a')
+arr.append('b')
+s = ''.join(arr)
+
+// 2. string format
+a ='a'
+b ='b'
+s = f'{a}{b}' #python 3.6 and above
+```
+
+#### String Format
+```
+# fstring requires python 3.6 and above
+a = 10.546
+print(f'{a}') #10.546
+print(f'{a:.2f}') #10.55 (with good rounding)
+print(f'{a:.0f}') #11 (with good rounding)
+print(f'{a:.2%}') #1054.60%
+print(f'{a:%}') #1054.600000% (0 padded to achieve default chars)
+print(f'{a:.2e}') #1.05e+01
+print(f'{a:e}') #1.054600e+01 (0 padded to achieve default chars)
+print(f'{a:12}') #      10.546 (left pad to 12 chars, same as {a:>12})
+print(f'{a:<12}') #10.546 (right pad to 12 chars)
+print(f'{a:012}') #00000010.546 (left pad to 12 chars with 0s, same as {a:>012})
+print(f'{a:<012}') #10.546000000 (right pad to 12 chars with 0s)
+
+b = 100
+print(f'{b:b}') #1100100 (binary, base 2)
+print(f'{b:o}') #144 (octal, base 8)
+print(f'{b:x}') #64 (hexal, base 16)
+
+c = (a,b)
+print(f'{a},{b}') #10.546,100
+print(f'{c}') #(10.546, 100)
+```
+
+#### Substring by Index
+```
+subs = s[startIdx:endIdx+1]
+```
+
+#### Find Substring Index
+```
+startIdx = s.find(substring) //return -1 if not found
+```
+
+#### Replace Substring
+```
+// 1. replace known segment
+s = f'{s[:startIdx]}{newstring}{s[endIdx+1:]}'
+
+// 2. find and replace first occurrence
+s = s.replace(substring, newstring, 1)
+
+// 3. find and replace all occurrences
+s = s.replace(substring, newstring)
+```
+
+#### Reverse String
+```
+s = s[::-1]
+```
+
+#### Split String
+```
+arr = s.split(delimiter)
+```
+
+#### Trim
+```
+s = s.trim()
+```
+
+#### Change Case
+```
+// 1. to upper
+s = s.upper()
+
+// 2. to lower
+s = s.lower()
+```
+
+</details>
 
 ## Continuous Memory Dynamic Array
 <details>
