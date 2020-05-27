@@ -7,6 +7,7 @@ Comparison of language APIs
 - [Stack](#stack)
 - [Queue](#queue)
 - [Priority Queue](#priority-queue)
+- [Sort](#sort)
 
 ## String
 <details>
@@ -1073,6 +1074,54 @@ heapq.heapify(pq)
 #### Delete All
 ```
 pq.clear()
+```
+
+</details>
+
+
+## Sort
+<details>
+<summary>C++</summary>
+           
+```
+#include <algorithm>
+
+// sortable containers: vector, set, map
+// 1. default non-descending (same for stable_sort)
+sort(container.begin(), container.end());
+sort(container.begin()+4, container.end()); //sort part of container (only works for continuous memeory container like vector)
+
+// 2. non-increasing (same for stable_sort)
+sort(container.begin(), container.end(), greater<T>());
+
+// 3. custom comparator (same for stable_sort)
+sort(container.begin(), container.end(), [](const <T> &a, const <T> &b) -> bool{ 
+    return a.mProperty > b.mProperty; 
+});
+
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+           
+```
+#include <algorithm>
+
+// 1. default non-descending (python sort is always stable)
+list.sort() //in place
+list = sorted(list/tuple/dictionary/set/frozenset) //return new "list"
+
+// 2. non-increasing
+list.sort(reverse=True)
+list = sorted(list/tuple/dictionary/set/frozenset, reverse=True)
+
+// 3. custom comparator
+list.sort(key=lambda element: element.name.lower())
+list = sorted(list/tuple/dictionary/set/frozenset, key=lambda element: element.name.lower())
+list.sort(reverse=True, key=lambda element: element.name.lower())
+list = sorted(list/tuple/dictionary/set/frozenset, reverse=True, key=lambda element: element.name.lower())
 ```
 
 </details>
