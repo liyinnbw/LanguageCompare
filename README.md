@@ -737,6 +737,18 @@ for key,value in enumerate(dict):
     print(key, value)
     dict[key] = newvalue
 ```
+#### Convert to Array
+```
+//1. array of tupple
+tuples = dict.items()
+
+//2. array of keys
+keys = list(dict.keys())
+
+//3. array of values
+values = list(dict.values())
+```
+
 </details>
 
 ## Stack
@@ -1119,9 +1131,16 @@ list = sorted(list/tuple/dictionary/set/frozenset, reverse=True)
 
 // 3. custom comparator
 list.sort(key=lambda element: element.name.lower())
+list.sort(key=lambda x,y: cmp(x.name.lower(),y.name.lower())) //more general and free than previous line
 list = sorted(list/tuple/dictionary/set/frozenset, key=lambda element: element.name.lower())
 list.sort(reverse=True, key=lambda element: element.name.lower())
 list = sorted(list/tuple/dictionary/set/frozenset, reverse=True, key=lambda element: element.name.lower())
+
+//4. sort dictionary
+list_key_sorted = sorted(dict) //equivalent to sorted(prices.iterkeys())
+list_val_sorted = sorted(dict.itervalues())
+list_tuple_sorted_by_key = sorted(dict.iteritems()) // return list of (key,value) tupples sorted by key
+list_tuple_sorted_by_val = sorted(dict.iteritems(), key=lambda x: x[1]) // return list of (key,value) tupples sorted by key
 ```
 
 </details>
