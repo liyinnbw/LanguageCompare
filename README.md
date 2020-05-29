@@ -9,6 +9,7 @@ Comparison of language APIs
 - [Priority Queue](#priority-queue)
 - [Sort](#sort)
 - [Bits](#bits)
+- [Type Convert](#type-convert)
 
 ## String
 <details>
@@ -1185,6 +1186,60 @@ c=a<<1 //10100 prepend 0s
 //shift 3 bits right
 c=a>>3 //1 prepend 0s
 
+```
+
+</details>
+
+## Type Convert
+
+<details>
+<summary>C++</summary>
+
+#### To String
+```
+//anything to string (since c++11)
+#include <string>
+string s = to_string(other_typed_variable)
+```
+
+#### From String
+```
+//(since c++11) 
+//note string can contain things other than the desired type
+//for example "hello 1001" if convert ot int will be 1001
+
+#include <string>
+
+//1. string to int famility
+int i = stoi(str_base10);
+int i = stoi(str_base16, nullptr, 16);
+int i = stoi(str_base2, nullptr, 2);
+long l = stol(s);
+long long ll=stoll(s);
+unsigned long ul=stoul(s);
+unsigned long long ull=stoull(s);
+
+//2. string to float famility
+float f = stof(s);
+double d = stod(s);
+long double ld = stold(s);
+```
+
+#### General
+```
+//TypeA to TypeB
+<TypeB> b = static_cast<TypeA>(a);
+```
+
+</details>
+           
+<details>
+<summary>Python</summary>
+
+#### General
+```
+//TypeA to TypeB
+b = TypeB(a) //such as str(a), float(a), list(a)...
 ```
 
 </details>
