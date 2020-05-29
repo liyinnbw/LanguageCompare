@@ -8,6 +8,7 @@ Comparison of language APIs
 - [Queue](#queue)
 - [Priority Queue](#priority-queue)
 - [Sort](#sort)
+- [Bits](#bits)
 
 ## String
 <details>
@@ -1141,6 +1142,49 @@ list_key_sorted = sorted(dict) //equivalent to sorted(prices.iterkeys())
 list_val_sorted = sorted(dict.itervalues())
 list_tuple_sorted_by_key = sorted(dict.iteritems()) // return list of (key,value) tupples sorted by key
 list_tuple_sorted_by_val = sorted(dict.iteritems(), key=lambda x: x[1]) // return list of (key,value) tupples sorted by key
+```
+
+</details>
+
+## Bits
+
+<details>
+<summary>Same for C++/Python/Java</summary>
+
+#### Init
+```
+// assign binary 1010 to int a, result in a=10
+// note since a is int with 32 bits, this will
+// prepend 1010 with 0s
+a = 0b1010 
+```
+
+#### Print Binary
+Refer to [String/String Format](#string-format)
+
+#### Bitwise Operations
+```
+a = 0b1010
+b = 0b0110
+
+//and
+c = a&b //10 prepend 0s
+
+//or
+c = a|b //1110 prepend 0s
+
+//xor
+c=a^b //1100 prepend 0s
+
+//negate
+c=~a //0101 prepend 1s which is equivalent to -1011 prepend 0s (2's complement)
+
+//shift 1 bit left
+c=a<<1 //10100 prepend 0s
+
+//shift 3 bits right
+c=a>>3 //1 prepend 0s
+
 ```
 
 </details>
