@@ -733,7 +733,7 @@ dict.clear();
 ```
 #### Iterate
 ```
-for key,value in enumerate(dict):
+for key,value in dict.items(): #dict.iteritems() if python 2, enumerate(dict) is wrong cos it just print 0,1,2...
     print(key, value)
     dict[key] = newvalue
 ```
