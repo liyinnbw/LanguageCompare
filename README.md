@@ -1244,3 +1244,77 @@ b = TypeB(a) //such as str(a), float(a), list(a)...
 ```
 
 </details>
+
+## Infinity
+
+<details>
+<summary>C++</summary>
+
+#### Init
+```
+#include <limits>
+float/double positiveInf= std::numeric_limits<float/double>::infinity(); // note int cannot, it will just be 0
+float/double negativeInf= -std::numeric_limits<float/double>::infinity();
+```
+
+#### Operations
+```
+double inf = std::numeric_limits<double>::infinity();
+
+// The following are TRUE
+1000000<inf;
+std::numeric_limits<int>::max()<inf;
+std::numeric_limits<float>::max()<inf;
+std::numeric_limits<double>::max()<inf;
+inf+1 == inf;
+inf-1 == inf;
+inf*2 == inf;
+inf/2 == inf;
+pow(inf,2) == inf;
+pow(inf,3) == inf;
+-inf != inf; // -inf is negative infinity
+
+double ninf = -std::numeric_limits<double>::infinity();
+
+// The following are TRUE
+-1000000>ninf;
+std::numeric_limits<int>::min()>ninf;
+std::numeric_limits<float>::min()>ninf;
+std::numeric_limits<double>::min()>ninf;
+ninf+1 == ninf;
+ninf-1 == ninf;
+ninf*2 == ninf;
+ninf/2 == ninf;
+pow(ninf,2) != ninf; //negative negative = positive
+pow(ninf,3) == ninf;
+-ninf != ninf; // -ninf is infinity
+
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+
+#### Init
+```
+//1. no library needed
+positiveInf=float('inf)
+negativeInf=float('-inf')
+
+//2. math
+#include math
+positiveInf = math.inf
+negativeInf = -math.inf
+
+//3. numpy
+#include numpy as np
+positiveInf = np.inf
+negativeInf = np.inf
+```
+
+#### Operations
+```
+behaves like C++, for all 3 initialization ways
+```
+</details>
