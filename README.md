@@ -1299,7 +1299,7 @@ pow(ninf,3) == ninf;
 #### Init
 ```
 //1. no library needed
-positiveInf=float('inf)
+positiveInf=float('inf) //note, there is no int('inf')
 negativeInf=float('-inf')
 
 //2. math
