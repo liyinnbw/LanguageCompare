@@ -10,6 +10,7 @@ Comparison of language APIs
 - [Sort](#sort)
 - [Bits](#bits)
 - [Type Convert](#type-convert)
+- [Infinity](#infinity)
 
 ## String
 <details>
@@ -367,7 +368,7 @@ vec.erase(remove(vec.begin(), vec.end(), item), vec.end());
 ```
 1. ls = [ ]
 2. ls = [a,b,c]
-3. ls = [a for i in range(size)]
+3. ls = [a for i in range(size)] // or ls = [a]*size
 ```
 #### Iterate
 ```
