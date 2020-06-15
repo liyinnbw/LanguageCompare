@@ -965,8 +965,8 @@ dq.appendleft(item) //add to left
 #### Dequeue
 ```
 if len(dq)>0:
-    dq.popleft() // if you always append
-    dq.pop() // if you always appendleft
+    item=dq.popleft() // if you always append
+    item=dq.pop() // if you always appendleft
 ```
 #### Delete All
 ```
