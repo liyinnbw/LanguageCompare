@@ -11,6 +11,7 @@ Comparison of language APIs
 - [Bits](#bits)
 - [Type Convert](#type-convert)
 - [Infinity](#infinity)
+- [Random](#random)
 
 ## String
 <details>
@@ -1317,4 +1318,69 @@ negativeInf = np.inf
 ```
 behaves like C++, for all 3 initialization ways
 ```
+</details>
+
+
+## Random
+Note: all random number generators discussed here is not suitable for security applications (possible to be hacked).
+
+<details>
+<summary>C++</summary>
+
+#### Sample Usage
+[About Source of Randomness](https://blog.cloudflare.com/ensuring-randomness-with-linuxs-random-number-generator/)
+[On how to seed mt19937](https://stackoverflow.com/questions/45069219/how-to-succinctly-portably-and-thoroughly-seed-the-mt19937-prng)
+[All provided distributions](http://www.cplusplus.com/reference/random/)
+```
+#include <random>  // Don't use srand()+rand() from <stdlib.h> anymore, they are not modern C++ and flawed!
+#include <chrono>  // Needed only if you seed using system time
+
+//step1: get a random seed (one per Peudo Random Number Generator(PRNG))
+unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count(); //seed using system time
+unsigned int seed = std::random_device{}(); //seed using hardware CSPRNG, can fallback to some simple PRNG or even constants. Not recommended.
+
+//step2: init a PRNG (one per thread, since the random generator is not thread safe)
+std::mt19937 gen(seed); //A preconfigured mersenne_twister_engine with 2^19937 states and generates 32 bit uint_fast32_t
+std::mt19937_64 gen(seed); //Same engine as above, generates 64 bit uint_fast64_t numbers, usually 32 bit will do
+
+//step2.5: re-init a PRNG
+gen.seed(new_seed);
+
+//step3: define distribution to randomly sample from
+std::uniform_int_distribution<T>  distrib(a, b); //range=[a, b], T must be IntType (short,int,long,long long, or their unsigned versions)
+std::uniform_real_distribution<T> distrib(a, b); //range=[a, b), T must be RealType (float,double,long double)
+std::normal_distribution<T>       distrib(mean, stddev); //normal distribution, T must be RealType
+std::bernoulli_distribution       distrib(p); //return True with probability p, else False
+std::binomial_distribution<T>     distrib(trials, p); //return True count, T must be IntType
+
+//step4: get random numbers repeatedly
+for (int n=0; n<N; ++n){
+    rand_num = distrib(gen);
+}
+```
+</details>
+
+<details>
+<summary>Python</summary>
+
+#### Sample Usage
+```
+import random
+
+//step1: init random generator and seed it (one per program, random is thread safe)
+random.seed()  // by default, seeded with system time, you can provide a number to fix the seed
+
+//step2: get random numbers repeatedly
+rand_num = random.randint(a,b)  //uniform in range=[a, b], return int
+rand_num = random.randrange(a,b,step)  //uniform in range=[a, b), with range step=step, return int
+rand_num = random.random() //uniform in range=[0.0, 1.0), return float
+rand_num = random.uniform(a,b) //uniform in range=[a, b], return float. Note b may or may not be obtainable depending on rounding
+rand_num = random.gauss(mean, stddev) //normal distribution, return float
+rand_item = random.choice([a,b,c]) //choose an item in list uniformly
+rand_seq = random.choices([a,b,c],[weight_a,weight_b,weight_c], k=x) //choose x items from list, with replacement, according to weights
+rand_seq = random.sample([a,b,c], k=x)    # choose x items from list, without replacement
+random.shuffle(list) // shuffle list
+
+```
+
 </details>
