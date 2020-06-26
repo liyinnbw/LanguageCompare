@@ -1327,10 +1327,10 @@ Note: all random number generators discussed here is not suitable for security a
 <details>
 <summary>C++</summary>
 
-#### Sample Usage
-[About Source of Randomness](https://blog.cloudflare.com/ensuring-randomness-with-linuxs-random-number-generator/)
-[On how to seed mt19937](https://stackoverflow.com/questions/45069219/how-to-succinctly-portably-and-thoroughly-seed-the-mt19937-prng)
-[All provided distributions](http://www.cplusplus.com/reference/random/)
+#### Generate Random Numbers
+- [About Source of Randomness](https://blog.cloudflare.com/ensuring-randomness-with-linuxs-random-number-generator/)
+- [On how to seed mt19937](https://stackoverflow.com/questions/45069219/how-to-succinctly-portably-and-thoroughly-seed-the-mt19937-prng)
+- [All provided distributions](http://www.cplusplus.com/reference/random/)
 ```
 #include <random>  // Don't use srand()+rand() from <stdlib.h> anymore, they are not modern C++ and flawed!
 #include <chrono>  // Needed only if you seed using system time
@@ -1358,12 +1358,28 @@ for (int n=0; n<N; ++n){
     rand_num = distrib(gen);
 }
 ```
+
+#### Random Shuffle
+```
+#include <algorithm>  //shuffle
+
+//step1: get a random seed (one per Peudo Random Number Generator(PRNG))
+unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count(); //seed using system time
+
+//step2: init a PRNG (one per thread, since the random generator is not thread safe)
+std::mt19937 gen(seed); //A preconfigured mersenne_twister_engine with 2^19937 states and generates 32 bit uint_fast32_t
+std::mt19937_64 gen(seed); //Same engine as above, generates 64 bit uint_fast64_t numbers, usually 32 bit will do
+
+//step3: shuffle in place
+shuffle (vector.begin(), vector.end(), gen);
+```
 </details>
 
 <details>
 <summary>Python</summary>
 
-#### Sample Usage
+#### Generate Random Numbers
+- [All provided distributions](https://docs.python.org/3/library/random.html)
 ```
 import random
 
@@ -1379,8 +1395,11 @@ rand_num = random.gauss(mean, stddev) //normal distribution, return float
 rand_item = random.choice([a,b,c]) //choose an item in list uniformly
 rand_seq = random.choices([a,b,c],[weight_a,weight_b,weight_c], k=x) //choose x items from list, with replacement, according to weights
 rand_seq = random.sample([a,b,c], k=x)    # choose x items from list, without replacement
-random.shuffle(list) // shuffle list
+```
 
+#### Random Shuffle
+```
+random.shuffle(list) // shuffle list
 ```
 
 </details>
