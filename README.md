@@ -12,6 +12,7 @@ Comparison of language APIs
 - [Type Convert](#type-convert)
 - [Infinity](#infinity)
 - [Random](#random)
+- [Set](#set)
 
 ## String
 <details>
@@ -1400,6 +1401,175 @@ rand_seq = random.sample([a,b,c], k=x)    # choose x items from list, without re
 #### Random Shuffle
 ```
 random.shuffle(list) // shuffle list
+```
+
+</details>
+
+## Set
+<details>
+<summary>C++</summary>
+
+#### Init
+```
+#include <unordered_set>
+1. unordered_set<T> set;
+2. unordered_set<T> set({a,b,c,a}); //initializer list, duplicates ignored
+3. unordered_set<T> set(vec.begin(), vec.end()); //copy from vector, duplicates ignored
+```
+#### Search item
+```
+std::unordered_set<T>::const_iterator it = set.find(item);
+return (it!=set.end() ? True : False;
+```
+#### Insert item
+```
+//1. insert 1 item, iterator points to existing or newly-inserted item, bool is True if insert successful
+pair<iterator,bool> result = set.insert(item); //insert 1 item if not exist, copy
+pair<iterator,bool> result = set.emplace(Args of item constructor);  //construct and insert inplace if not exist
+
+//2. insert multiple items (no emplace equivalent, return no value)
+set.insert ({a,b,c,a}); //initializer list, duplicates ignored
+set.insert (vec.begin(), vec.end()); //copy from vector, duplicates ignored
+```
+#### Delete item
+```
+// 1. use iterator
+std::unordered_set<T>::const_iterator it = set.find(item);
+if(it!=set.end()) set.erase(it); // calls item destructor
+
+// 2. use item
+count = set.erase(item); // returns count of items removed, 0 if item not found. calls item destructor
+```
+#### Delete all items
+```
+set.clear(); // calls items destructor
+```
+#### Iterate
+```
+// 1. if you only need to read
+for(const T& item: set){ }
+
+// 2. delete while iterating
+for (std::unordered_set<T>::const_iterator it = set.begin(); it != set.end(); ) {
+    if (...) {
+        it = set.erase(it); //the new it points to next item in set
+    }else {++it;}
+}
+```
+#### Convert to Array
+```
+vector<T> vec(set.begin(),set.end()); //copy
+```
+#### Set operations
+No direct method to output set.
+```
+#include <algorithm>
+//1. Union A | B
+std::vector<T> vec(setA.size()+setB.size());
+std::vector<T>::iterator it=std::set_union(setA.begin(), setA.end(), setB.begin(), setB.end(), vec.begin());
+vec.resize(it-vec.begin()); //reduce oversized vector
+
+//2. Intersection A & B
+std::vector<T> vec(std::min(setA.size(),setB.size()));
+std::vector<T>::iterator it=std::set_intersection(setA.begin(), setA.end(), setB.begin(), setB.end(), vec.begin());
+vec.resize(it-vec.begin()); //reduce oversized vector
+
+//3. Difference A-B
+std::vector<T> vec(setA.size());
+std::vector<T>::iterator it=std::set_difference(setA.begin(), setA.end(), setB.begin(), setB.end(), vec.begin());
+vec.resize(it-vec.begin()); //reduce oversized vector
+
+//4. Symmetric Difference A^B
+std::vector<T> vec(setA.size()+setB.size());
+std::vector<T>::iterator it=std::set_symmetric_difference(setA.begin(), setA.end(), setB.begin(), setB.end(), vec.begin());
+vec.resize(it-vec.begin()); //reduce oversized vector
+
+```
+</details>
+
+<details>
+<summary>Python</summary>
+
+#### Init
+```
+1. set=set()
+2. set={a,b,c} //compare this with dict
+3. set=set(list) //copy, O(len(list))
+```
+#### Search item
+```
+if item in set:
+    print(item)
+```
+#### Insert item
+```
+//1. single item
+set.add(item)
+
+//2. multiple items O(new items count)
+set.update(list)
+set.update(set)
+set.update(set1, set2, set3...)
+```
+#### Delete item
+```
+// 1. remove and return a random item
+if len(set)>0:
+    item = set.pop()
+
+// 2. remove item with no return
+set.remove(item) // throw error if item not found
+set.discard(item) //no error if item not found
+```
+#### Delete all items
+```
+set.clear();
+```
+#### Iterate
+```
+for item in set:
+    print(item)
+```
+#### Convert to Array
+```
+list = list(set)
+```
+#### Set operations
+```
+//1.Union
+set=A.union(B, C,...) //union method, O(sum of items in sets)
+set=A|B|C|...         // | operator, O(sum of items in sets)
+A.update(B, C,...)    //A is modified in place, O(sum of items in sets except A)
+
+//2.Intersection
+set=A.intersection(B, C,...) //intersection method, O(sum of items in sets except A)
+set=A & B & C & ...          // & operator, O(sum of items in sets except A)
+A.intersection_update(B, C,...) //A is modified in place, O(len(A)*number_of_other_sets)
+
+//3.Difference
+set=A.difference(B) // method, returns items in A but not in B, O(len(A))
+set=A-B             // - operator, returns items in A but not in B, O(len(A))
+A.difference_update(B) //A is modified in place, O(len(A))
+
+//4. Symmetric Difference
+set = A.symmetric_difference(B) //method, returns items not in both, O(len(A)+len(B))
+set = A^B                       //^ operator, returns items not in both, O(len(A)+len(B))
+A.symmetric_difference_update(B) //A is modified in place, O(len(B))
+
+//5. Is Subset
+A < B   // A is subset of B
+A <= B  // equivalent to A.issubset(B)
+
+//6. Is Superset
+A > B   // A is superset of B
+A >= B  // equivalent to B.issubset(A)
+
+//7. Equal
+A==B
+
+//8. Is Disjoint
+A.isdisjoint(B)
+
 ```
 
 </details>
