@@ -659,7 +659,7 @@ dq.clear()
 #### Search item
 ```
 it = hash.find(key);
-if(it!=hash.end()) return it->value;
+if(it!=hash.end()) return it->second;
 ```
 #### Insert item
 ```
@@ -669,7 +669,7 @@ hash[key]=value;
 ```
 // 1.
 it = hash.find(key);
-if(it!=hash.end()) it->value=newvalue;
+if(it!=hash.end()) it->second=newvalue;
 
 // 2. if you are sure that the key exists or don't care if new item added to hash
 hash[key]=value;
@@ -693,7 +693,7 @@ hash.clear(); // calls items destructor
 for(const pair< T1,T2 >& item: hash){ }
 
 // 2. if you want to update, remove const (VERIFICATION NEEDED) 
-for(pair< T1,T2 >& item: hash){ item.value=newvalue; }
+for(pair< T1,T2 >& item: hash){ item.second=newvalue; }
 ```
 </details>
 
