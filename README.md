@@ -13,6 +13,7 @@ Comparison of language APIs
 - [Infinity](#infinity)
 - [Random](#random)
 - [Set](#set)
+- [OOP](#OOP)
 
 ## String
 <details>
@@ -1570,6 +1571,242 @@ A==B
 //8. Is Disjoint
 A.isdisjoint(B)
 
+```
+
+</details>
+
+## OOP
+
+Different languages has different terminologies. To avoid confusion, I standardize the meaning of the following terms as:
+- method: class's member function (C++ calls this "member function", Java & Python call this "method")
+- function: free function, not tied to class
+- instance: object created from a class
+- attribute: a class's member variable (C++ calls this "member variable", Java call this "field/attribute", python call this "attribute")
+- variable: free variable, not tied to class
+- parameter: variable passed to function
+
+<details>
+<summary>C++</summary>
+
+#### Basic Class Structure
+Note: Getters and setters are ignored for succinctness.
+```
+//C.h
+#ifndef CLASS_A_H_
+#define CLASS_A_H_
+
+#include <others>
+
+namespace NS{
+Class C{
+public:
+    C();
+    C(const Type& arg); //arg is not necessary but for easier understanding, you may write arg out
+    virtual ~C(); //virtual destructor to prevent child class call base class destructor instead of its own destructor
+    ReturnType PublicMethod(const Type& arg); //you may add a "const" keyword before ";" if the method does not modify attribute
+    Type publicAttribute_; //its a convention postfix private variables with "_" 
+private:
+    ReturnType PrivateMethod(const Type& arg);
+    Type privateAttribute_;
+};
+}
+#endif
+
+//C.cpp
+#include <C.h>
+using namespace std;
+using namespace NS;
+
+C::C(){
+    Type defaultValue=0;
+    C(defaultValue);
+}
+C::C(Type arg){
+    public_attribute = arg;
+    private_attribute = arg;
+}
+C::~C() {
+    
+}
+
+ReturnType PublicMethod(Type arg=0){ //provide default parameter value
+    return PrivateMethod(arg);
+}
+
+ReturnType PrivateMethod(const Type& arg){
+    return arg*privateAttribute_;
+}
+
+```
+#### Class Method and Attribute
+```
+//C.h
+...
+Class C{
+public:
+    static ReturnType ClassMethod(const Type& arg); //class method can only read/write class attribute
+                                                    //class method can be called with both instance and class
+    static Type classAttribute;    //both instance and class method can read/write class attribute
+}
+...
+
+//C.cpp
+...
+Type C::classAttribute = 0;
+ReturnType C::ClassMethod(const Type& arg){
+    return classAttribute;
+}
+...
+```
+
+</details> 
+
+<details>
+<summary>Python</summary>
+
+#### Basic Class Structure
+
+Summary on python underscores:
+- Single underscore prefix is a convention meaning "private". It has mostly no effect except for import * which will ignore anything starts with '_'
+- Double underscore prefix will be replaced with '_ClassName__' outside the class. Its main purpose is to prevent accidental overriding
+- More than double underscore prefix is the same as double underscore
+- Double prefix and postfix underscore are reserved for special variable, function and should not be used with custom variable, function.
+
+Note: Getters and setters are ignored for succinctness.
+```
+# namespace is automatically given by file name
+class ClassName:
+    def __init__(self, arg=0): # python class can only have 1 constructor, 
+                               # if you need both default & parameterized constructors,
+                               # supply parameters with default values
+                               
+        self.public_attribute = arg
+        self._private_attribute = arg   # note single "_" is just a convention to indicate private
+                                        # you can still access this attribute form outside using instance._private_attribute
+                                        # however, anything with a single "_" will be ignored in from module import *
+
+    def public_function(self):
+        self._private_function()
+        
+    def _private_function(self):        # note single "_" is just a convention to indicate private
+        print(self._private_attribute)  # you can still access this attribute form outside using instance._private_function()
+                                        # however, anything with a single "_" will be ignored in from module import *
+        
+```
+
+#### Class Method and Attribute
+```
+class ClassName:
+    class_attribute = 0                 # you can read/write this from outside using ClassName.class_attribute
+                                        # or invoke a class method
+    
+    def __init__(self, arg=0):
+        class_attribute = 2             # this is a local variable, will NOT overwrite the actual class variable
+        self.class_attribute = 1        # this is an attribute, will NOT overwrite the actual class variable
+    
+    @classmethod
+    def class_method(cls):              # note "cls" is used instead of "self"
+        print(cls.class_attribute)      # class method can read/write class attributes
+                                        # class method CANT access instance attribute nor instance method (expected)
+                                        # class method can be invoked using ClassName or instance
+        
+    @staticmethod
+    def static_method():                # note there is no "self" nor "cls" needed, mostly used as pure helper function
+        print(cls.class_attribute)      # static method CANT read/write class attributes
+                                        # static method CANT access instance attribute nor instance method (expected)
+                                        # static method can be invoked using ClassName or instance
+```
+
+#### Inheritance
+Although python supports multi-class inheritance, it should be avoided as much as possible.
+```
+import Base1
+import Base2
+class ClassA(Base1, Base2):   # multi-class inheritance, claimed to be left-to-right, depth-first 
+                              # (but my test shows undeterministic behaviour)
+    def __init__(self, arg=0):
+        super().__init__(arg) # or super(ClassA,self).__init__(arg) in python 2
+                              # you may also use Base1.__init__(arg), Base2.__init__(arg)
+                              # but then you'll have to change the class name if
+                              # the base class names changes later on.
+                              
+        print(self.parent_attribute) # once the parent has been initialized, the child can call parent variable easily
+                                     # WARNING: avoid having same attribute name in parents and child
+        
+    def base_function(self, arg):    # override/extend parent function
+        
+        # invoke all parent methods from left to right, depth-first
+        # WARNING: avoid having the same method name in both parents
+        super().base_function(arg) # or super(ClassA,self).base_function(arg) in python 2
+        
+        # if the base class name is provided,
+        # only depth-frst search the provided class
+        Base1.base_function(arg)
+        
+        # do something else to extend the base class method
+        
+```
+
+#### Abstract Class
+While any class can serve as the base class, the abstract class will enforce its functions to be implemented by the child class. Else, the child class will throw error when instantiating. (Since python 2.6)
+```
+from abc import ABC, abstractmethodd  
+
+class Base(ABC): # abstract class inherit ABC class
+    def __init__(self, arg):
+        super().__init__() # or super(Base,self).__init__() in python 2
+        self.var = arg     # abstract class can have attribute
+    
+    @abstractmethod        
+    def abstract_function(self): # abstract method need not to be implemented
+        pass
+    
+    @abstractmethod        
+    def abstract_function(self): # abstract method can be implemented to provide basic functionality
+        self.var = 0
+```
+
+#### Interface
+Python has no interface, you may use abstract class to serve this purpose.
+
+#### Operators
+```
+class ClassName:
+    def __init__(self):
+        pass
+    def __eq__(self,other):   #override == operator, default compare object hash, together with ___eq__ used by sort() and sorted()
+        if isinstance(other, ClassA):
+            return self.var == other.var
+        return NotImplemented
+        
+    def __ne__(self, other):  #override != operator, only needed for python2
+        result = self.__eq__(other)
+        if result is not NotImplemented:
+            return not result
+        return NotImplemented
+        
+    def __lt__(self, other):  #override < operator, together with ___eq__ used by sort() and sorted()
+        if isinstance(other, ClassA):
+            return self.var < other.var
+        return NotImplemented
+        
+    def __gt__(self, other):  #override > operator
+        if isinstance(other, ClassA):
+            return self.var > other.var
+        return NotImplemented
+        
+    def __le__(self, other):  #override <= operator
+        if isinstance(other, ClassA):
+            return self.var <= other.var
+        return NotImplemented
+        
+    def __ge__(self, other):  #override >= operator
+        if isinstance(other, ClassA):
+            return self.var >= other.var
+        return NotImplemented
+    
+    def __cmp__(self, other): #no longer in use since python 3
+        return NotImplemented
 ```
 
 </details>
