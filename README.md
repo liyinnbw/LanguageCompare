@@ -13,7 +13,7 @@ Comparison of language APIs
 - [Infinity](#infinity)
 - [Random](#random)
 - [Set](#set)
-- [OOP](#OOP)
+- [OOP](#oop)
 
 ## String
 <details>
@@ -1589,75 +1589,56 @@ Different languages has different terminologies. To avoid confusion, I standardi
 <summary>C++</summary>
 
 #### Basic Class Structure
-Note: Getters and setters are ignored for succinctness.
-```
-//C.h
-#ifndef CLASS_A_H_
-#define CLASS_A_H_
+See demo here:
+- [SimpleClass.h](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/simple_class.h)
+- [SimpleClass.cpp](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/simple_class.cpp)
 
-#include <others>
-
-namespace NS{
-Class C{
-public:
-    C();
-    C(const Type& arg); //arg is not necessary but for easier understanding, you may write arg out
-    virtual ~C(); //virtual destructor to prevent child class call base class destructor instead of its own destructor
-    ReturnType PublicMethod(const Type& arg); //you may add a "const" keyword before ";" if the method does not modify attribute
-    Type publicAttribute_; //its a convention postfix private variables with "_" 
-private:
-    ReturnType PrivateMethod(const Type& arg);
-    Type privateAttribute_;
-};
-}
-#endif
-
-//C.cpp
-#include <C.h>
-using namespace std;
-using namespace NS;
-
-C::C(){
-    Type defaultValue=0;
-    C(defaultValue);
-}
-C::C(Type arg){
-    public_attribute = arg;
-    private_attribute = arg;
-}
-C::~C() {
-    
-}
-
-ReturnType PublicMethod(Type arg=0){ //provide default parameter value
-    return PrivateMethod(arg);
-}
-
-ReturnType PrivateMethod(const Type& arg){
-    return arg*privateAttribute_;
-}
-
-```
 #### Class Method and Attribute
 ```
 //C.h
-...
+namespace ns{
 Class C{
 public:
     static ReturnType ClassMethod(const Type& arg); //class method can only read/write class attribute
                                                     //class method can be called with both instance and class
     static Type classAttribute;    //both instance and class method can read/write class attribute
+};
 }
-...
 
 //C.cpp
-...
+namespace ns{
 Type C::classAttribute = 0;
 ReturnType C::ClassMethod(const Type& arg){
     return classAttribute;
 }
-...
+}
 ```
+
+#### Inheritance
+Although C++ supports multi-class inheritance, follow these rules:
+1. multiple abstract class inheritance is allowed
+2. multiple implementation class inheritance should be avoided
+3. avoid deep inheritance
+4. if the purpose of inheritance is to extend/override functionality, consider composition instead of inheritance
+5. most of the time, inherit only from abstract class (interface)
+
+See demo here:
+- [BaseClass.h](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/inheritance/concrete_class.h)
+- [BaseClass.cpp](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/inheritance/concrete_class.cpp)
+- [ChildClass.h](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/inheritance/concrete_child_class.h)
+- [ChildClass.cpp](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/inheritance/concrete_child_class.cpp)
+
+#### Abstract Class
+Abstract class in C++ is defined as a class with at least 1 pure virtual function. Abstract class cannot be instantiated at compile time. Try to use abstract class as interface only.
+
+See demo here:
+- [AbstractClass.h](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/inheritance/abstract_class_a.h)
+
+#### Interface
+C++ has no interface, you may use abstract class to serve this purpose.
+
+#### Operators
+TODO
 
 </details> 
 
@@ -1718,7 +1699,7 @@ class ClassName:
 ```
 
 #### Inheritance
-Although python supports multi-class inheritance, it should be avoided as much as possible.
+Although python supports multi-class inheritance, it should be avoided as much as possible. Most time, inheritance can be replaced by composition.
 ```
 import Base1
 import Base2
@@ -1748,7 +1729,7 @@ class ClassA(Base1, Base2):   # multi-class inheritance, claimed to be left-to-r
 ```
 
 #### Abstract Class
-While any class can serve as the base class, the abstract class will enforce its functions to be implemented by the child class. Else, the child class will throw error when instantiating. (Since python 2.6)
+While any class can serve as the base class, the abstract class will enforce its functions to be implemented by the child class. Else, the child class will throw error when instantiating (Since python 2.6). Python abstract class also serves as interface. 
 ```
 from abc import ABC, abstractmethodd  
 
@@ -1770,6 +1751,7 @@ class Base(ABC): # abstract class inherit ABC class
 Python has no interface, you may use abstract class to serve this purpose.
 
 #### Operators
+Avoid overriding operator as much as possible. If you have to, make sure the meaning of operator is intuitive and conventional.
 ```
 class ClassName:
     def __init__(self):
