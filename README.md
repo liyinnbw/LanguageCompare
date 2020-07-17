@@ -1638,7 +1638,8 @@ See demo here:
 C++ has no interface, you may use abstract class to serve this purpose.
 
 #### Operators
-TODO
+See demo here:
+- [OperatorOverloadedClass.h](https://github.com/liyinnbw/cpp_boilerplate/blob/master/src/operator_overload/operator_overloaded_class.h)
 
 </details> 
 
