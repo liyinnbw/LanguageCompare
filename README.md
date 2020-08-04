@@ -296,6 +296,17 @@ if (it!=vec.end()){
     //not found
 }
 ```
+#### Search item ALL occurrence idices
+```
+#include <algorithm> //for find
+std::vector<T>::iterator it = vec.begin();
+std::vector<int> indices;
+while ((iter = std::find(it, vec.end(), item)) != vec.end())
+{
+    indices.push_back(std::distance(vec.begin(), it));
+    ++it;
+}
+```
 #### Count item
 ```
 #include <algorithm> // for count
@@ -402,6 +413,10 @@ try:
     idx = ls.index(item) //throw error if item not found
 except:
     print('not found')
+```
+#### Search item ALL occurrence idices
+```
+indices = [i for i, x in enumerate(list) if x == item]
 ```
 #### Count item
 ```
