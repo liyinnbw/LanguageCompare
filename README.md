@@ -1510,7 +1510,8 @@ vec.resize(it-vec.begin()); //reduce oversized vector
 ```
 1. set=set()
 2. set={a,b,c} //compare this with dict
-3. set=set(list) //copy, O(len(list))
+3. set={x for x in x_list} //set comprehension
+4. set=set(list) //copy, O(len(list))
 ```
 #### Search item
 ```
