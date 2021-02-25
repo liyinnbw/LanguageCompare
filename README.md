@@ -254,6 +254,100 @@ s = s.lower()
 
 </details>
 
+<details>
+<summary>JavaScript</summary>
+    
+#### Init
+```
+// 1. single line
+let s = 'hello world'
+
+// 2. multi line
+TODO
+```
+
+#### String Builder
+```
+// template literals
+let a ='a'
+let b ='b'
+let s = `${a}${b}`
+```
+
+#### String Format (TODO)
+```
+# fstring requires python 3.6 and above
+a = 10.546
+print(f'{a}') #10.546
+print(f'{a:.2f}') #10.55 (with good rounding)
+print(f'{a:.0f}') #11 (with good rounding)
+print(f'{a:.2%}') #1054.60%
+print(f'{a:%}') #1054.600000% (0 padded to achieve default chars)
+print(f'{a:.2e}') #1.05e+01
+print(f'{a:e}') #1.054600e+01 (0 padded to achieve default chars)
+print(f'{a:12}') #      10.546 (left pad to 12 chars, same as {a:>12})
+print(f'{a:<12}') #10.546 (right pad to 12 chars)
+print(f'{a:012}') #00000010.546 (left pad to 12 chars with 0s, same as {a:>012})
+print(f'{a:<012}') #10.546000000 (right pad to 12 chars with 0s)
+
+b = 100
+print(f'{b:b}') #1100100 (binary, base 2)
+print(f'{b:o}') #144 (octal, base 8)
+print(f'{b:x}') #64 (hexal, base 16)
+
+c = (a,b)
+print(f'{a},{b}') #10.546,100
+print(f'{c}') #(10.546, 100)
+```
+
+#### Substring by Index (TODO)
+```
+subs = s[startIdx:endIdx+1]
+```
+
+#### Find Substring Index (TODO)
+```
+startIdx = s.find(substring) //return -1 if not found
+```
+
+#### Replace Substring (TODO)
+```
+// 1. replace known segment
+s = f'{s[:startIdx]}{newstring}{s[endIdx+1:]}'
+
+// 2. find and replace first occurrence
+s = s.replace(substring, newstring, 1)
+
+// 3. find and replace all occurrences
+s = s.replace(substring, newstring)
+```
+
+#### Reverse String (TODO)
+```
+s = s[::-1]
+```
+
+#### Split String (TODO)
+```
+arr = s.split(delimiter)
+```
+
+#### Trim (TODO)
+```
+s = s.trim()
+```
+
+#### Change Case
+```
+// 1. to upper
+let s = s.toUpperCase();
+
+// 2. to lower
+let s = s.toLowerCase();
+```
+
+</details>
+
 ## Continuous Memory Dynamic Array
 <details>
 <summary>C++</summary>
@@ -481,6 +575,92 @@ except:
 ```
 </details>
 
+<details>
+<summary>JavaScript</summary>
+
+#### Init
+```
+1. let ls = [ ];
+2. let ls = [a,b,c];
+```
+#### Iterate (TODO)
+```
+// 1. if you only need to read
+for item in ls:
+    print(item)
+
+// 2. or the more conventional way
+for idx in range(len(ls)):
+    ls[idx]=newitem
+
+// 3. or if you need idx and original item at the same time
+for idx, item in enumerate(ls):
+    print(item)
+    ls[idx]=newitem
+
+// 4. if you want remove items, use list comprehension. use slicing on left-hand-side to keep original references in case somewhere else is referring to this
+ls[:] = [newitem for item in ls if (some condition)]
+```
+#### Check if item exists
+```
+return ls.includes(item); //since ES2017
+```
+#### Search item first occurrence idx
+```
+const idx = ls.indexOf(item); //-1 if not found
+```
+#### Search item ALL occurrence idices (TODO)
+```
+indices = [i for i, x in enumerate(list) if x == item]
+```
+#### Count item 
+```
+const count = ls.length;
+```
+#### Add to back
+```
+ls.push(item)
+```
+#### Delete from back
+```
+// 1. in place
+ls.splice(ls.length-1, 1)
+
+// 2. copy
+let ls = ls.slice(0, ls.length)
+```
+#### Insert to index i
+```
+// 1.
+ls.splice(i, 0, item);
+
+// 2. insert items to list starting at index i
+ls.splice(i, 0, ...items);
+```
+#### Delete from index i or range [i, i+n)
+```
+// 1. copy
+let ls = [...ls.slice(0, i), ...ls.slice(i + 1)];
+let ls = [...ls.slice(0, i), ...ls.slice(i+n)];
+
+// 2. in place
+ls.splice(i, 1)
+ls.splice(i, n)
+```
+#### Delete All (TODO)
+```
+1. ls.clear()
+2. del ls[:]
+```
+#### Delete by value (TODO)
+```
+// remove the first occurrence of item, throw error if item not found
+try:
+    ls.remove(item)
+except:
+    print('item not found')
+```
+</details>
 
 ## Linked List
 <details>
