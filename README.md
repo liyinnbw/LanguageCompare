@@ -541,10 +541,10 @@ ls = ls[:-1]
 ls.insert(i, item)
 
 // 2.
-ls[i:i]=[e]
+ls[i:i]=[e] // new element must be wrapped in a list
 
 // 3. insert n items starting at index i
-3. ls[i:i+n]=[n elements]
+3. ls[i:i]=[n elements]
 ```
 #### Delete from index i or range [i, i+n)
 ```
