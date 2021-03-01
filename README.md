@@ -1053,10 +1053,9 @@ for (const key of keys) {
 //1. array of tupples
 const tuples = [...map]
 //2. array of keys
-const keys = [...map].map(([key, value]) => {return key;});
+const keys = [...map.keys()]
 //3. array of values
-const keys = [...map].map(([key, value]) => {return value;});
-
+const keys = [...map.values()]
 // obj
 //1. array of tupples
 const tuples = Object.entries(obj)
