@@ -952,6 +952,122 @@ values = list(dict.values())
 
 </details>
 
+
+<details>
+<summary>JavaScript</summary>
+
+Both object & map can be used as hash map, use map if needs frequent update.
+#### Init
+```
+// map
+1. let map = new Map();
+2. let map = new Map([
+        [key1, val1],
+        [key2, val2],
+        [key3, val3]
+   ]);
+
+// object
+1. let obj = {};
+2. let obj = {
+        key1: val1,
+        key2: val2,
+        key3: val3
+   };
+```
+#### Search item
+```
+// map: return undefined if key does not exist
+// works for both non-string & string key
+const value = map.get(key);
+
+//object
+// 1. works for both non-string & string key
+const value = obj[key];
+// 2. works only for string key
+const value = obj.key;
+```
+#### Insert item
+```
+// map
+map.set(key, val);
+
+// object
+obj[key]=val;
+```
+#### Update item
+```
+// map
+map.set(key, val);
+
+// object
+obj[key]=val;
+```
+#### Delete item
+```
+// map
+// success == true if key exists, else false
+const success = map.delete(key);
+
+// obj
+// success is always true regardless whether key exists or not
+const success = delete obj[key];
+```
+#### Delete all items
+```
+// map
+map.clear();
+
+// obj has no clear operator, have to delete one by one or create new empty object
+obj = {};
+```
+#### Iterate
+```
+// map
+// 1.
+for (const entry of map) {
+    const key = entry[0];
+    const val = entry[1];
+}
+// 2.
+for (const [key, val] of map) {
+}
+// 3.
+function sortByKey(a, b) {
+    return a[0] > b[0] ? 1 : -1;
+}
+for (const [key, value] of [...map].sort(sortByKey)) {
+}
+
+// obj
+const keys = Object.keys(obj);
+keys.sort();
+for (const key of keys) {
+    const val = obj[key];
+}
+    
+```
+#### Convert to Array
+```
+// map
+//1. array of tupples
+const tuples = [...map]
+//2. array of keys
+const keys = [...map].map(([key, value]) => {return key;});
+//3. array of values
+const keys = [...map].map(([key, value]) => {return value;});
+
+// obj
+//1. array of tupples
+const tuples = Object.entries(obj)
+//2. array of keys
+const keys = Object.keys(obj)
+//3. array of values
+const values = Object.values(obj)
+```
+
+</details>
+
 ## Stack
 <details>
 <summary>C++</summary>
