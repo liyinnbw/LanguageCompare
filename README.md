@@ -966,6 +966,7 @@ Both object & map can be used as hash map, use map if needs frequent update.
         [key2, val2],
         [key3, val3]
    ]);
+3. let map = new Map([...anotherMap]);
 
 // object
 1. let obj = {};
@@ -974,6 +975,7 @@ Both object & map can be used as hash map, use map if needs frequent update.
         key2: val2,
         key3: val3
    };
+3. let obj = {...anotherObj}; // careful with nested object
 ```
 #### Search item
 ```
