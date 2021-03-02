@@ -1888,6 +1888,81 @@ A.isdisjoint(B)
 
 </details>
 
+<details>
+<summary>JavaScript</summary>
+
+#### Init
+```
+1. let set=new Set();
+2. let set=new Set([array items]);
+```
+#### Search item
+```
+if set.has(item):
+    print(item)
+```
+#### Insert item
+```
+set.add(item)
+```
+#### Delete item
+```
+// success=true if item was in set, else false
+const success = set.delete(item)
+```
+#### Delete all items
+```
+set.clear();
+```
+#### Iterate
+```
+for (const item of set) {
+}
+```
+#### Convert to Array
+```
+let arr = [...set] //use spread operator
+```
+#### Set operations (TODO)
+```
+//1.Union
+set=A.union(B, C,...) //union method, O(sum of items in sets)
+set=A|B|C|...         // | operator, O(sum of items in sets)
+A.update(B, C,...)    //A is modified in place, O(sum of items in sets except A)
+
+//2.Intersection
+set=A.intersection(B, C,...) //intersection method, O(sum of items in sets except A)
+set=A & B & C & ...          // & operator, O(sum of items in sets except A)
+A.intersection_update(B, C,...) //A is modified in place, O(len(A)*number_of_other_sets)
+
+//3.Difference
+set=A.difference(B) // method, returns items in A but not in B, O(len(A))
+set=A-B             // - operator, returns items in A but not in B, O(len(A))
+A.difference_update(B) //A is modified in place, O(len(A))
+
+//4. Symmetric Difference
+set = A.symmetric_difference(B) //method, returns items not in both, O(len(A)+len(B))
+set = A^B                       //^ operator, returns items not in both, O(len(A)+len(B))
+A.symmetric_difference_update(B) //A is modified in place, O(len(B))
+
+//5. Is Subset
+A < B   // A is subset of B
+A <= B  // equivalent to A.issubset(B)
+
+//6. Is Superset
+A > B   // A is superset of B
+A >= B  // equivalent to B.issubset(A)
+
+//7. Equal
+A==B
+
+//8. Is Disjoint
+A.isdisjoint(B)
+
+```
+
+</details>
+
 ## OOP
 
 Different languages has different terminologies. To avoid confusion, I standardize the meaning of the following terms as:
