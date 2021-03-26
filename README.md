@@ -900,6 +900,7 @@ for(pair< T1,T2 >& item: hash){ item.second=newvalue; }
 ```
 1. dict={ };
 2. dict={ key1:value1, key2:value2, key3:value3}
+3. dict=collections.defaultdict(type) # if key not found, autocreate default value of type
 ```
 #### Search item
 ```
