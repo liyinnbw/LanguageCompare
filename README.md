@@ -8,6 +8,7 @@ Comparison of language APIs
 - [Queue](#queue)
 - [Priority Queue](#priority-queue)
 - [Sort](#sort)
+- [Binary Search](#binary-search)
 - [Bits](#bits)
 - [Type Convert](#type-convert)
 - [Infinity](#infinity)
@@ -1438,8 +1439,6 @@ sort(container.begin(), container.end(), [](const <T> &a, const <T> &b) -> bool{
 <summary>Python</summary>
            
 ```
-#include <algorithm>
-
 // 1. default non-descending (python sort is always stable)
 list.sort() //in place
 list = sorted(list/tuple/dictionary/set/frozenset) //return new "list"
@@ -1464,6 +1463,37 @@ list_tuple_sorted_by_val = sorted(dict.iteritems(), key=lambda x: x[1]) // retur
 
 </details>
 
+           
+## Binary Search
+<details>
+<summary>C++</summary>
+           
+```
+TODO
+
+```
+
+</details>
+
+<details>
+<summary>Python</summary>
+           
+```
+import bisect
+
+# if found: idx will be the index of left-most item matching target
+# if not found: idx will be the insertion position of the new item
+# for the found case, you can also think it as the left-most insertion position of the target
+1. idx = bisect.bisect_left(arr, target) # most of time, this should be used
+
+# if found: idx will be the index of right-most item matching target + 1
+# if not found: idx will be the insertion position of the new item (same as bisect_left)
+# for the found case, you can also think it as the insertion position of the target
+2. idx = bisect.bisect_right(arr, target)
+```
+
+</details>
+      
 ## Bits
 
 <details>
